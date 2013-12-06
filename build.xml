@@ -34,7 +34,7 @@
 	<!-- This tip is useful if you have several main classes and to avoid run one by one by changing the "main.class" property -->
 	<property name="dest.dir"                  value="bin" />
 	<property name="crossref.dir"              value="crossref" />
-	<property name="main.class"                value="my.package.name.ClassnameOfMain" />
+	<property name="main.class"                value="graphics.window.GameWindow" />
 	<property name="app.lib"                   value="lib" />
 	<property name="aspectjml.lib"             value="lib-aspectjml5.0" />
 	<!-- NOTE: 'aspectjml.lib' MUST INCLUDE ASPECTJ WEAVERS, AJC AND ABC -->
