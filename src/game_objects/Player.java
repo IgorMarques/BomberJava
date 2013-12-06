@@ -41,7 +41,7 @@ public class Player extends GameObject implements Explodable {
 		this.number = number;
 		
 		flameLevel = 3;
-		maxBombs = 1;
+		maxBombs = 3;
 		activeBombs = 0;
 		
 		trepassable = true;
@@ -49,36 +49,27 @@ public class Player extends GameObject implements Explodable {
 	}
 	
 	public void placeBomb() {
-		long now = System.nanoTime();
-		
-		if (now - lastBomb < BOMB_COOLDOWN_NS)
-			return;
-		
-		lastBomb = System.nanoTime();
-				
-		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
-		
-		if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
-			getGame().addObject(bombToAdd);
-			bombToAdd.start();
-			System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
+		if (maxBombs > activeBombs){
+			long now = System.nanoTime();
+			
+			if (now - lastBomb < BOMB_COOLDOWN_NS)
+				return;
+			
+			lastBomb = System.nanoTime();
+					
+			Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
+			
+			if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
+				getGame().addObject(bombToAdd);
+				bombToAdd.start();
+				activeBombs++;
+				System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
+			}
 		}
 	}
 	
-	public void placeBlock() {
-		long now = System.nanoTime();
-		
-		if (now - lastBlock < BLOCK_COOLDOWN_NS)
-			return;
-		
-		lastBlock = System.nanoTime();
-				
-		Block blockToAdd = new Block(getGame(), this.getX(), this.getY());
-		
-		if (getGame().getMap().isMovableSpace(blockToAdd.getX(), blockToAdd.getY())) {
-			getGame().addObject(blockToAdd);
-			System.out.println("Placed block at " + blockToAdd.getX() + ", " + blockToAdd.getY());
-		}
+	public void bombExploded(){
+		activeBombs--;
 	}
 	
 	@Override

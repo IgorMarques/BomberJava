@@ -14,6 +14,8 @@ public class Bomb extends GameObject implements Explodable {
 	private int flameLevel;
 	private int playerNumber;
 	
+	private Player player;
+	
 	private boolean exploded;
 	
 	public Bomb(Game game, int flameLevel, Player player) {
@@ -21,6 +23,8 @@ public class Bomb extends GameObject implements Explodable {
 		this.flameLevel = flameLevel;
 		this.playerNumber = player.getNumber();
 		timeElapsed = 0;
+		
+		 this.player = player;
 		
 		setExploded(false);
 	}
@@ -97,6 +101,7 @@ public class Bomb extends GameObject implements Explodable {
 			}
 			
 		}
+		player.bombExploded();
 		getGame().removeObject(this);
 	}
 
