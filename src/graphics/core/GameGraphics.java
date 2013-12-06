@@ -61,8 +61,6 @@ public class GameGraphics implements Drawable {
 
 		if (keyListener.isPressed(KeyEvent.VK_SPACE))
 			game.getPlayer().placeBomb();
-		if (keyListener.isPressed(KeyEvent.VK_SHIFT))
-			game.getPlayer().placeBlock();
 		
 		game.update(delta);
 	}
