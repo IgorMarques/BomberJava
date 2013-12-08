@@ -24,7 +24,6 @@ public class PlayerGraphics extends GameObjectGraphics {
 		this.player = (Player) player;
 	}
 	
-	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(player.isDead() ? Color.red : Color.blue);

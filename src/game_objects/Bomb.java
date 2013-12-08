@@ -6,25 +6,39 @@ import events.ExplodeEvent;
 
 public class Bomb extends GameObject implements Explodable {
 	
-	protected static final double TIME_TO_EXPLODE = 3000;
-	private double timeElapsed; 
+	protected /*@ spec_public @*/ static final double TIME_TO_EXPLODE = 3000;
+	private /*@ spec_public @*/ double timeElapsed; 
 	
-	private boolean started;
+	private /*@ spec_public @*/ boolean started;
 	
-	private int flameLevel;
-	private int playerNumber;
+	private /*@ spec_public @*/ int flameLevel;
+	private /*@ spec_public @*/ int playerNumber;
 	
-	private Player player;
+	private /*@ spec_public @*/ Player player;
 	
-	private boolean exploded;
+	private /*@ spec_public @*/ boolean exploded;
 	
+	//@ public invariant timeElapsed < TIME_TO_EXPLODE;
+	//@ public invariant flameLevel > 0;
+	//por padrao playernNumber e player sao not null
+	
+	/*@also
+	 @ assignable flameLevel;
+	 @ assignable playerNumber;
+	 @ assignable timeElapsed;
+	 @ assignable player;
+	 @ ensures this.flameLevel == flameLevel;
+	 @ ensures this.playerNumber == playerNumber;
+	 @ ensures this.timeElapsed == 0;
+	 @ ensures this.player == player;
+	 @*/
 	public Bomb(Game game, int flameLevel, Player player) {
 		super(game, player.getX(), player.getY());
 		this.flameLevel = flameLevel;
 		this.playerNumber = player.getNumber();
 		timeElapsed = 0;
 		
-		 this.player = player;
+		this.player = player;
 		
 		setExploded(false);
 	}
@@ -123,13 +137,11 @@ public class Bomb extends GameObject implements Explodable {
 		started = true;
 	}
 	
-	@Override
 	public String toString() {
 		return "Bomb> " + super.toString() + "| flameLevel: " + flameLevel + "; playerNumber: " +
 			playerNumber;
 	}
-
-	@Override
+	
 	public void exploded(ExplodeEvent e) {
 		explode();
 	}
@@ -142,7 +154,6 @@ public class Bomb extends GameObject implements Explodable {
 		this.exploded = exploded;
 	}
 
-	@Override
 	public void update(double delta) {
 		if (started) {
 			timeElapsed += delta * 28;

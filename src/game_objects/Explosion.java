@@ -15,7 +15,6 @@ public class Explosion extends GameObject {
 		this.bomb = bomb;
 	}
 
-	@Override
 	public void update(double delta) {
 		timeElapsed += delta * 28;
 		

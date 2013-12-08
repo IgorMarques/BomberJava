@@ -23,7 +23,6 @@ public class BombGraphics extends GameObjectGraphics {
 		this.bomb = (Bomb) bomb;
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(bomb.isExploded() ? Color.YELLOW : Color.black);

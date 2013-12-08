@@ -24,7 +24,6 @@ public class GameGraphics implements Drawable {
 		this.mapGraphics = new MapGraphics(game.getMap());
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		mapGraphics.draw(g);
 		

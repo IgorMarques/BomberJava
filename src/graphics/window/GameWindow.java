@@ -123,7 +123,6 @@ public class GameWindow extends JFrame implements Drawable {
 		game.update(delta);
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		//g2d.clearRect(0, 0, width, height);

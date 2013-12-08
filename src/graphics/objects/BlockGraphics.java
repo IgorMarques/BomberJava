@@ -1,7 +1,5 @@
 package graphics.objects;
 
-import static constants.Constants.TILESIZE;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -12,10 +10,12 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import game_objects.Block;
-import game_objects.GameObject;
+import game_objects.*;
 
 public class BlockGraphics extends GameObjectGraphics {
+	
+	public static final int TILESIZE = 32;
+	
 	private Block block;
 	
 	public BlockGraphics(GameObject block) {
@@ -23,7 +23,6 @@ public class BlockGraphics extends GameObjectGraphics {
 		this.block = (Block) block;
 	}
 
-	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		

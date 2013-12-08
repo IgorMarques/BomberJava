@@ -19,7 +19,6 @@ public class GameKeyListener implements KeyListener {
 		keys.put(KeyEvent.VK_SHIFT, false);
 	}
 	
-	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
@@ -27,12 +26,10 @@ public class GameKeyListener implements KeyListener {
 		keys.put(e.getKeyCode(), true);
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e) {
 		keys.put(e.getKeyCode(), false);
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 	

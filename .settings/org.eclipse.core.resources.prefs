@@ -1,3 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/game_objects/Block.java=UTF-8
+encoding//src/game_objects/Bomb.java=UTF-8
 encoding//src/graphics/objects/BlockGraphics.java=UTF-8
 encoding//src/graphics/objects/ExplosionGraphics.java=UTF-8

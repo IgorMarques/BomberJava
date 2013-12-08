@@ -77,7 +77,6 @@ public class Map implements MoveListener {
 		return (-1 < y && y < getHeight() && -1 < x && x < getWidth() && isMovableSpace(x, y));
 	}
 
-	@Override
 	public void objectMoved(MoveEvent e) {
 		int lastY = e.getLastY();
 		int lastX = e.getLastX();

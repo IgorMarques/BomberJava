@@ -20,7 +20,6 @@ public class MapGraphics implements Drawable {
 		this.map = map;
 	}
 	
-	@Override
 	public void draw(Graphics g) {
 		g.setColor(Color.BLACK);
 		BufferedImage img = null;

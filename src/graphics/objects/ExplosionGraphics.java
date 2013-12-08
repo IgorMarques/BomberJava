@@ -11,16 +11,15 @@ import game_objects.Explosion;
 import game_objects.GameObject;
 
 public class ExplosionGraphics extends GameObjectGraphics {
-	private Explosion expĺosion;
+	private Explosion explosion;
 	
-	public ExplosionGraphics(GameObject expĺosion) {
-		super(expĺosion);
-		this.expĺosion = (Explosion) expĺosion;
+	public ExplosionGraphics(GameObject explosion) {
+		super(explosion);
+		this.explosion = (Explosion) explosion;
 	}
 
-	@Override
 	public void draw(Graphics g) {
-		if (expĺosion.isToRemove())
+		if (explosion.isToRemove())
 			return;
 		
 		Graphics2D g2d = (Graphics2D) g;
@@ -28,6 +27,6 @@ public class ExplosionGraphics extends GameObjectGraphics {
 		g2d.setColor(Color.red);
 		g2d.setFont(new Font("Courier New", Font.BOLD, 20));
 		
-		g2d.drawString("X", expĺosion.getX() * TILESIZE + TILESIZE/2 - 5, expĺosion.getY() * TILESIZE + TILESIZE/2 + 6);
+		g2d.drawString("X", explosion.getX() * TILESIZE + TILESIZE/2 - 5, explosion.getY() * TILESIZE + TILESIZE/2 + 6);
 	}
 }

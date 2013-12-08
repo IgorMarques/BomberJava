@@ -72,7 +72,7 @@ public class Player extends GameObject implements Explodable {
 		activeBombs--;
 	}
 	
-	@Override
+
 	public void exploded(ExplodeEvent e) {
 		dead = true;
 		System.out.println("Player #" + number + " has been killed by player #" + e.getPlayerNumber());
@@ -93,13 +93,13 @@ public class Player extends GameObject implements Explodable {
 		movingRight = move[3];
 	}
 
-	@Override
+	
 	public String toString() {
 		return "Player> " + super.toString() + "; playerNumber: " +
 				number;
 	}
 
-	@Override
+	
 	public void update(double delta) {
 		int x = getX(), y = getY();
 		

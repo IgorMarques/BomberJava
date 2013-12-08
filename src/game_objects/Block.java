@@ -6,37 +6,42 @@ import behavior.Explodable;
 
 public class Block extends GameObject implements Explodable {
 	
-	private boolean explodable;
-	private PowerUp powerUp;
+	private /*@ spec_public @*/ boolean explodable = true;
 	
+	//@ public invariant explodable == true;
+	
+	//usar heranca aqui
 	public Block(Game game, int x, int y) {
 		super(game, x, y);
 	}
 	
-	@Override
+	/*@ requires true;
+	@ assignable getGame();
+	@ ensures (
+	@ \forall int i; 0 <=i && i  <getGame().getObjects().length;
+	@			getGame().getObjects()[i] != this;
+	@) 
+	@ ensures \old(getGame().getObjects().length)-1 == getGame().getObjects.length
+	@*/
 	public void exploded(ExplodeEvent e) {
-		if (!explodable)
-			getGame().removeObject(this);
-		return;
+		getGame().removeObject(this);
 	}
 
-	public boolean isExplodable() {
+	
+	/*@ requires true;
+	 @ assignable \nothing;
+	 @ ensures \return == this.explodable;@*/
+	public /*@pure@*/ boolean isExplodable() {
 		return explodable;
 	}
 
+	/*@ requires true;
+	 @ assignable explodable;
+	 @ ensures this.explodable == explodable;@*/
 	public void setExplodable(boolean explodable) {
 		this.explodable = explodable;
 	}
 
-	public PowerUp getPowerUp() {
-		return powerUp;
-	}
-
-	public void setPowerUp(PowerUp powerUp) {
-		this.powerUp = powerUp;
-	}
-
-	@Override
 	public void update(double delta) {
 	}
 
