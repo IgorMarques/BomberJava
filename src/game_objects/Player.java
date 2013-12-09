@@ -87,11 +87,16 @@ public class Player extends GameObject implements Explodable {
 					
 			Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 			
-			if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
-				getGame().addObject(bombToAdd);
-				bombToAdd.start();
-				activeBombs++;
-				System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
+			try {
+				if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
+					getGame().addObject(bombToAdd);
+					bombToAdd.start();
+					activeBombs++;
+					System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
+				}
+			} catch (OutOfAreaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
@@ -215,12 +220,17 @@ public class Player extends GameObject implements Explodable {
 		if (moveTimer > MOVE_TIMEOUT) {
 			moveTimer %= MOVE_TIMEOUT;
 			
-			if (getGame().getMap().isValid(x, y)) {
-				setX(x);
-				setY(y);
-				
-				if (x != lastX && y != lastY)
-					moveListener.objectMoved(new MoveEvent(lastX, lastY, this));
+			try {
+				if (getGame().getMap().isValid(x, y)) {
+					setX(x);
+					setY(y);
+					
+					if (x != lastX && y != lastY)
+						moveListener.objectMoved(new MoveEvent(lastX, lastY, this));
+				}
+			} catch (OutOfAreaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}

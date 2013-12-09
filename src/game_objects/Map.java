@@ -118,14 +118,20 @@ public class Map implements MoveListener {
 		return height;
 	}
 	
-	/*@ requires x > 0;
-	 @ requires y > 0;
-	 @ requires x < this.width;
-	 @ requires y < this.height;
-	 @ assignable \nothing;
-	 @ ensures \result == matrix[y][x];
+	/*@ public normal_behavior
+		 @ requires x > 0;
+		 @ requires y > 0;
+		 @ requires x < this.width;
+		 @ requires y < this.height;
+		 @ assignable \nothing;
+		 @ ensures \result == matrix[y][x];
+	 @ also
+	 @ public exceptional_behavior
+	 @ requires x > 0 || x < this.width;
+	 @ requires y > 0 || y < this.height;
+	 @ singnals_only OutOfAreaException;
 	@*/
-	public /*@ pure @*/ boolean isMovableSpace(int x, int y){
+	public /*@ pure @*/ boolean isMovableSpace(int x, int y) throws OutOfAreaException{
 		return matrix[y][x];
 	}
 	
@@ -136,7 +142,7 @@ public class Map implements MoveListener {
 	 @ assignable \nothing;
 	 @ ensures \result == (-1 < y && y < getHeight() && -1 < x && x < getWidth() && isMovableSpace(x, y));
 	@*/
-	public /*@ pure @*/ boolean isValid(int x, int y) {
+	public /*@ pure @*/ boolean isValid(int x, int y) throws OutOfAreaException {
 		return (-1 < y && y < getHeight() && -1 < x && x < getWidth() && isMovableSpace(x, y));
 	}
 
