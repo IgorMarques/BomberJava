@@ -3,6 +3,8 @@ package game_objects;
 import behavior.Explodable;
 import core.Game;
 import events.ExplodeEvent;
+import static constants.Constants.WIDTH;
+import static constants.Constants.HEIGHT;
 
 public class Bomb extends GameObject implements Explodable {
 	
@@ -27,6 +29,7 @@ public class Bomb extends GameObject implements Explodable {
 	 @ assignable playerNumber;
 	 @ assignable timeElapsed;
 	 @ assignable player;
+	 	 nao anotei o explodable como assignable por ele já estar anotado no setExploded
 	 @ ensures this.flameLevel == flameLevel;
 	 @ ensures this.playerNumber == playerNumber;
 	 @ ensures this.timeElapsed == 0;
@@ -43,6 +46,29 @@ public class Bomb extends GameObject implements Explodable {
 		setExploded(false);
 	}
 	
+	/*@ 	requires isExploded == true;
+	  @		assingnable \nothing
+	  @		ensures \nothing
+	  @	also
+	  @		requires isExploded ==false;
+	  @		assignable getGame();
+	  		nao anotei player como assignable por ele já estar anotado
+	  @ 	ensures 
+	  @			map.objAt(getX(), getY()) instanceof Explosion;
+	  @ 		\forall int i; 1 <=i && i  < flameleval();
+	  @				map.objAt(getX()+i, getY()) instanceof Explosion;
+	  @				map.objAt(getX()-i, getY()) instanceof Explosion;
+	  @				map.objAt(getX(), getY()+i) instanceof Explosion;
+	  @				map.objAt(getX(), getY()-i) instanceof Explosion;
+	  @ also
+	  @ 	ensures (
+	  @ 		\forall int i; 0 <=i && i  <getGame().getObjects().length;
+	  @				getGame().getObjects()[i] != this;
+	  @		) 
+	  @		public constraint
+	  @     	ensures \old(getGame().getObjects().length)-1 == getGame().getObjects.length
+	@*/
+
 	public void explode() {
 		if (isExploded())
 			return;
@@ -58,7 +84,6 @@ public class Bomb extends GameObject implements Explodable {
 		setExploded(true);
 		checkPosition(getX(), getY());
 		
-	
 		//explode center
 		getGame().addObject(new Explosion(getGame(), getX() , getY(), this));	
 		System.out.println("exploding at x: "+getX()+" y: "+getY());
@@ -119,10 +144,22 @@ public class Bomb extends GameObject implements Explodable {
 		getGame().removeObject(this);
 	}
 
-	public int getPlayerNumber() {
+	/*@ requires true;
+	 @ assignable \nothing;
+	 @ ensures \result == playerNumber; 
+	 @ */
+	public /*@pure@*/ int getPlayerNumber() {
 		return playerNumber;
 	}
-
+	
+	/*@ requires x < WIDTH;
+	 @ requires y < HEIGHT;
+	 @ assignable \nothing;
+	 @ ensures \forall int i; 0 <=i && i  < getGame().getMap().objAt(x, y);
+	 @				requires getGame().getMap().objAt(x, y)[i] instanceof Explodable;
+	 @				assignbale getGame().getMap().objAt(x, y)[i];
+	 @				ensures getGame().getMap().objAt(x, y)[i].exploded();
+	 @ */
 	private void checkPosition(int x, int y) {
 		GameObject[] affecteds = getGame().getMap().objAt(x, y);
 		
@@ -133,27 +170,54 @@ public class Bomb extends GameObject implements Explodable {
 		}
 	}
 
+	/*@ requires true;
+	 @ assignable started;
+	 @ ensures started == true;
+	 */
 	public void start() {
 		started = true;
 	}
 	
-	public String toString() {
+	/*@ also 
+	 	@ ensures \result == "Bomb> " + super.toString() + "| flameLevel: " + flameLevel + "; playerNumber: " +
+			playerNumber;
+	 @*/
+	 public String toString() {
 		return "Bomb> " + super.toString() + "| flameLevel: " + flameLevel + "; playerNumber: " +
 			playerNumber;
 	}
 	
+	/*@ requires true;
+	 @ assignable nothing;
+	 @ ensures explode();
+	 */
 	public void exploded(ExplodeEvent e) {
 		explode();
 	}
 
-	public boolean isExploded() {
+	/*@ requires true;
+	 @ assignable nothing;
+	 @ ensures \result == exploded;
+	 */
+	public /*@pure@*/ boolean isExploded() {
 		return exploded;
 	}
 
+	/*@ requires true;
+	 @ assignable exploded;
+	 @ ensures this.exploded == exploded;@*/
 	public void setExploded(boolean exploded) {
 		this.exploded = exploded;
 	}
 
+	/*@ requires delta > 0;
+	 @ requires started == true
+	 @ assignable timeElapsed;
+	 @ ensures timeElapsed += delta * 28;
+	 @ also
+	 @ requires timeElapsed >= TIME_TO_EXPLODE;
+	 @ ensures explode();
+	@*/
 	public void update(double delta) {
 		if (started) {
 			timeElapsed += delta * 28;

@@ -7,6 +7,7 @@ import behavior.Explodable;
 public class Block extends GameObject implements Explodable {
 	
 	private /*@ spec_public @*/ boolean explodable = true;
+	//@ public initially explodable == true;
 	
 	//@ public invariant explodable == true;
 	
@@ -21,7 +22,8 @@ public class Block extends GameObject implements Explodable {
 	@ \forall int i; 0 <=i && i  <getGame().getObjects().length;
 	@			getGame().getObjects()[i] != this;
 	@) 
-	@ ensures \old(getGame().getObjects().length)-1 == getGame().getObjects.length
+	@ public constraint
+	@	ensures \old(getGame().getObjects().length)-1 == getGame().getObjects.length
 	@*/
 	public void exploded(ExplodeEvent e) {
 		getGame().removeObject(this);

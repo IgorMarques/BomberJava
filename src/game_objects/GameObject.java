@@ -9,6 +9,8 @@ public abstract class GameObject {
 	private /*@ spec_public @*/ int y;
 	
 	protected /*@ spec_public @*/ boolean trepassable = false;
+	//@ public initially trepassable == false;
+	
 	private /*@ spec_public @*/ boolean toRemove;
 	
 	private /*@ spec_public @*/ Game game;
