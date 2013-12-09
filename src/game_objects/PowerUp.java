@@ -7,5 +7,7 @@ public abstract class PowerUp extends GameObject {
 		super(game, x, y);
 	}
 
+	/*@ requires true
+	@*/
 	public abstract void execute(Player player);
 }
