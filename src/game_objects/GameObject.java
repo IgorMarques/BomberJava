@@ -15,8 +15,10 @@ public abstract class GameObject {
 	
 	private /*@ spec_public @*/ Game game;
 	
-	//@ public invariant x < WIDTH
-	//@ public invariant y < HEIGHT
+	//@ public invariant x >= 0;
+	//@ public invariant y >= 0;
+	//@ public invariant x < WIDTH;
+	//@ public invariant y < HEIGHT;
 	
 	/*@ requires x < WIDTH;
 	@ requires y < HEIGHT;
@@ -56,7 +58,7 @@ public abstract class GameObject {
 	}
 	
 	/*@ requires x < WIDTH;
-	 @ requires x > 0;
+	 @ requires x >= 0;
 	 @ assignable x;
 	 @ ensures this.x == x;@*/
 	public void setX(int x) {
@@ -71,7 +73,7 @@ public abstract class GameObject {
 	}
 
 	/*@ requires y < HEIGHT;
-	 @ requires x > 0;
+	 @ requires y >= 0;
 	 @ assignable y;
 	 @ ensures this.y == y;@*/
 	public void setY(int y) {

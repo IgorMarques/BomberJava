@@ -19,9 +19,9 @@ public class Map implements MoveListener {
 	
 	private /*@ spec_public @*/ Game game;
 	
-	/*@ requires game != null
-	 @ assignable this.game
-	 @ ensures this.game == game
+	/*@ requires game != null;
+	 @ assignable this.game;
+	 @ ensures this.game == game;
 	 @ ensures \exists matrix instanceof boolean[height][width];
 	 @ ensures \forall i = 0; i < width;
 	 		   		\forall j = 0; i=j < height;

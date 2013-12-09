@@ -9,33 +9,52 @@ import events.ExplodeEvent;
 import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
-	private static final long BOMB_COOLDOWN_NS = 0;
-	private static final long BLOCK_COOLDOWN_NS = 0;
-	private static final double MOVE_TIMEOUT = 50;
+	private /*@ spec_public @*/ static final long BOMB_COOLDOWN_NS = 0;
+	//@ public invariant BOMB_COOLDOWN_NS == 0;
+
+	private /*@ spec_public @*/ static final double MOVE_TIMEOUT = 50;
+	//@ public invariant MOVE_TIMEOUT == 50;
 	
-	private double moveTimer = 0;
+	private /*@ spec_public @*/ double moveTimer = 0;
+	//@ public initially moveTimer == 0;
 	
-	private long lastBomb = 0;
-	private long lastBlock = 0;
+	private /*@ spec_public @*/ long lastBomb = 0;
+	//@ public initially lastBomb == 0;
 	
-	private int number;
+	private /*@ spec_public @*/ int number;
 	
-	private int speed;
+	private /*@ spec_public @*/ int speed;
 	
-	private int flameLevel;
-	private int maxBombs;
-	private int activeBombs;
+	private /*@ spec_public @*/ int flameLevel;
+	private /*@ spec_public @*/ int maxBombs;
+	private /*@ spec_public @*/ int activeBombs;
 		
-	private MoveListener moveListener;
+	private /*@ spec_public @*/ MoveListener moveListener;
 	
 	//STATES
-	private boolean movingLeft;
-	private boolean movingRight;
-	private boolean movingUp;
-	private boolean movingDown;
-	private boolean stopped;
-	private boolean dead;
+	private /*@ spec_public @*/ boolean movingLeft;
+	private /*@ spec_public @*/ boolean movingRight;
+	private /*@ spec_public @*/ boolean movingUp;
+	private  /*@ spec_public @*/ boolean movingDown;
+	private /*@ spec_public @*/ boolean stopped;
+	private /*@ spec_public @*/ boolean dead;
+	
+	//@ public invariant maxBombs >= activeBombs;
 
+	/*@ also
+	 @ assignable this.number;
+	 @ assignable this.flameLevel;
+	 @ assignable this.maxBombs;
+	 @ assignable this.activeBombs;
+	 @ assignable this.trepassable;
+	 @ assignable this.moveListener;
+	 @ ensures this.number == number;
+	 @ ensures this.flameLevel == 3;
+	 @ ensures this.activeBombs == 0;
+	 @ ensures this.maxBombs == 3;
+	 @ ensures this.trepassable == true;
+	 @ ensures this.moveListener == game.getMap();
+	 @*/
 	public Player(Game game, int x, int y, int number) {
 		super(game, x, y);
 		this.number = number;
@@ -48,6 +67,15 @@ public class Player extends GameObject implements Explodable {
 		this.moveListener = game.getMap();
 	}
 	
+	/*@ requires this.maxBombs > activeBombs;
+	 @ requires !(System.nanoTime() - lastBomb < BOMB_COOLDOWN_NS);
+	 @ requires (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
+				getGame().addObject(bombToAdd);
+	 @ assignable activeBombs;
+	 @ ensures
+	 @	public constraint activeBombs == \old(activeBombs)+1;
+	 @  ensures \exists Bomb bomb; bomb == Bomb(getGame(), flameLevel, this); bombToAdd.getX() == getX(), bombToAdd.getY()== getY();
+	 @*/
 	public void placeBomb() {
 		if (maxBombs > activeBombs){
 			long now = System.nanoTime();
@@ -68,24 +96,50 @@ public class Player extends GameObject implements Explodable {
 		}
 	}
 	
+	/*@ requires true;
+	@ assignable this.activeBombs;
+	@ public constraint
+	@ 	ensures activeBombs == \old(activeBombs) -1;
+	@ */
 	public void bombExploded(){
 		activeBombs--;
 	}
 	
-
+	/*@ requires true;
+	@ assignable dead;
+	@ ensures dead == true;
+	@ */
 	public void exploded(ExplodeEvent e) {
 		dead = true;
 		System.out.println("Player #" + number + " has been killed by player #" + e.getPlayerNumber());
 	}
 
-	public int getNumber() {
+	/*@ requires true;
+	@ assignable \nothing;
+	@ ensures \result == this.number;
+	@ */
+	public /*@pure@*/ int getNumber() {
 		return number;
 	}
 
-	public boolean isDead() {
+	/*@ requires true;
+	@ assignable \nothing;
+	@ ensures \result == this.dead;
+	@ */
+	public /*@pure@*/ boolean isDead() {
 		return dead;
 	}
 	
+	/*@ requires move.length == 4;
+	@ assignable movingUp;
+	@ assignable movingDown;
+	@ assignable movingLeft;
+	@ assignable movingRight;
+	@ ensures movingUp == move [0];
+	@ ensures movingDown == move [1];
+	@ ensures movingLeft == move [2];
+	@ ensures movingRight == move [3];
+	@ */
 	public void move(boolean[] move) {
 		movingUp = move[0];
 		movingDown = move[1];
@@ -93,13 +147,39 @@ public class Player extends GameObject implements Explodable {
 		movingRight = move[3];
 	}
 
-	
-	public String toString() {
+	/*@ requires true;
+	 @ assignable \nothing;
+	 @ ensures \result ==" Player> " + super.toString() + "; playerNumber: " +
+				number ;
+	 @*/
+	public /*@pure@*/ String toString() {
 		return "Player> " + super.toString() + "; playerNumber: " +
 				number;
 	}
 
-	
+	/*@ requires delta > -1;
+	@ assignable x;
+	@ assignable y;
+	@ assignable moveTimer;
+	@ ensures moveTimer == (moveTimer + 28 * delta);
+	@ ensures checkMove(x,y);
+	@ also
+	@ requires movingDown
+	@ public constraint
+	@ 	ensures y == \old(y) + 1;
+	@ also
+	@ requires movingLeft
+	@ public constraint
+	@ 	ensures x == \old(x) - 1;
+	@ also
+	@ requires movingUp
+	@ public constraint
+	@ 	ensures y == \old(y) - 1;
+	@ also
+	@ requires movingRight
+	@ public constraint
+	@ ensures x == \old(x) + 1;
+	@ */
 	public void update(double delta) {
 		int x = getX(), y = getY();
 		
