@@ -20,7 +20,7 @@ public class Bomb extends GameObject implements Explodable {
 	
 	private /*@ spec_public @*/ boolean exploded;
 	
-	//@ public invariant timeElapsed < TIME_TO_EXPLODE;
+	//@ public invariant timeElapsed <= TIME_TO_EXPLODE;
 	//@ public invariant flameLevel > 0;
 	//por padrao playernNumber e player sao not null
 	
@@ -210,7 +210,7 @@ public class Bomb extends GameObject implements Explodable {
 		this.exploded = exploded;
 	}
 
-	/*@ requires delta > 0;
+	/*@ requires delta >= 0;
 	 @ requires started == true
 	 @ assignable timeElapsed;
 	 @ ensures timeElapsed += delta * 28;
