@@ -56,6 +56,7 @@ public abstract class GameObject {
 	}
 	
 	/*@ requires x < WIDTH;
+	 @ requires x > 0;
 	 @ assignable x;
 	 @ ensures this.x == x;@*/
 	public void setX(int x) {
@@ -70,6 +71,7 @@ public abstract class GameObject {
 	}
 
 	/*@ requires y < HEIGHT;
+	 @ requires x > 0;
 	 @ assignable y;
 	 @ ensures this.y == y;@*/
 	public void setY(int y) {
